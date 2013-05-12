@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/nrml/server"
 	"net/http"
 	"strconv"
 )
@@ -33,7 +34,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	err := db.sCheck()
 
 	if err != nil {
-		serveError(w, err.Error())
+		server.JsonErr(w, err)
+		//serveError(w, err.Error())
 		return
 	}
 
