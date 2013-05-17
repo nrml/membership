@@ -6,9 +6,9 @@ import (
 )
 
 func (service *MembershipService) Login(reg models.Registration) (models.Registration, error) {
-	res, err := service.tbl.Search("email=" + reg.Email)
+	res, err := service.tbl.Search("email='" + reg.Email + "'")
 	if len(res) == 0 {
-		return reg, errors.New("invalid username or password")
+		return reg, errors.New("invalid username: " + reg.Email)
 	}
 
 	match := res[0].(models.Registration)
@@ -18,34 +18,6 @@ func (service *MembershipService) Login(reg models.Registration) (models.Registr
 		return reg, err
 
 	} else {
-		return reg, errors.New("invalid username or password")
+		return reg, errors.New("invalid password")
 	}
 }
-
-// func (this *Db) Login(r Registration) (Registration, error) {
-// 	var reg Registration
-// 	stmt, err := this.db.Prepare("select id, email, password from registration where email = ?")
-// 	if err != nil {
-// 		fmt.Println(err)
-// 		return reg, err
-// 	}
-// 	defer stmt.Close()
-// 	var id int64
-// 	var email, pass string
-// 	err = stmt.QueryRow(r.Email).Scan(&id, &email, &pass)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 		return reg, err
-// 	}
-
-// 	if PassMatch(r.Password, pass) {
-// 		fmt.Println("OKAY login", email)
-// 	} else {
-// 		fmt.Println("BAD login", email)
-// 		err = errors.New("wrong password")
-// 	}
-
-// 	reg = Registration{id, email, ""}
-
-// 	return reg, err
-// }

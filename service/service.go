@@ -32,6 +32,7 @@ func (service *MembershipService) Init(namespace string) {
 }
 
 func sCheck(localdb *sqlite.DB) {
+	fmt.Println("sanity check: create registration table")
 	_, err := localdb.CreateTable("Registration", models.Registration{})
 	if err != nil {
 		fmt.Println("create registration table: ", err.Error())
