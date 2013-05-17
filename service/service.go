@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"fmt"
 	"github.com/nrml/datalayer/sqlite"
 	"github.com/nrml/membership/models"
@@ -48,6 +49,9 @@ func (service *MembershipService) Create(reg models.Registration) (models.Regist
 
 func (service *MembershipService) Get(id int64) (models.Registration, error) {
 	res, err := service.tbl.Get(id)
+	if res == nil {
+		return models.Registration{}, errors.New("uknown registration id")
+	}
 	reg := res.(models.Registration)
 	return reg, err
 }
