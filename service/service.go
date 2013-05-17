@@ -13,9 +13,6 @@ type MembershipService struct {
 	tbl       *sqlite.Table
 }
 
-var db *sqlite.DB
-var tbl *sqlite.Table
-
 func (service *MembershipService) Init(namespace string) {
 	service.Namespace = namespace + ".membership"
 	db := sqlite.DB{}
