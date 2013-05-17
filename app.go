@@ -2,13 +2,21 @@ package main
 
 import (
 	"fmt"
+	"github.com/nrml/membership/endpoints"
 	"net/http"
+	"os"
 )
 
 func main() {
-	http.HandleFunc("/", handler)
+	http.HandleFunc("/favicon.ico", endpoints.StaticHandler)
+	http.HandleFunc("/login", endpoints.LoginHandler)
+	http.HandleFunc("/", endpoints.Handler)
 
-	err := http.ListenAndServe(":8078", nil)
+	port := os.Args[1]
+
+	fmt.Println("listening on port:", port)
+
+	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		fmt.Printf("{error: \"%s\"}", err.Error())
 	}
