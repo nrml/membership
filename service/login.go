@@ -18,7 +18,7 @@ func (service *MembershipService) Login(reg models.Registration) (models.Registr
 		reg.ID = match.ID
 		return reg, err
 
-	} else {
-		return reg, errors.New("invalid password")
 	}
+	return reg, errors.New("invalid password")
+	
 }
