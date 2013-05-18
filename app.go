@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/nrml/membership/endpoints"
+	"github.com/nrml/membership-go/endpoints"
 	"net/http"
 	"os"
 )

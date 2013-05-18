@@ -3,8 +3,8 @@ package service
 import (
 	"errors"
 	"fmt"
-	"github.com/nrml/datalayer/sqlite"
-	"github.com/nrml/membership/models"
+	"github.com/nrml/datalayer-go/sqlite"
+	"github.com/nrml/membership-go/models"
 	"log"
 )
 

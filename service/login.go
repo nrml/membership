@@ -2,7 +2,7 @@ package service
 
 import (
 	"errors"
-	"github.com/nrml/membership/models"
+	"github.com/nrml/membership-go/models"
 )
 
 func (service *MembershipService) Login(reg models.Registration) (models.Registration, error) {
@@ -15,6 +15,7 @@ func (service *MembershipService) Login(reg models.Registration) (models.Registr
 
 	if passMatch(reg.Password, match.Password) {
 		reg.Password = ""
+		reg.ID = match.ID
 		return reg, err
 
 	} else {
