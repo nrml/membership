@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/nrml/membership-go/models"
 	"github.com/nrml/membership-go/service"
-	"github.com/nrml/server"
+	"github.com/nrml/server-go"
 	"net/http"
 	"strconv"
 )
@@ -152,5 +152,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	return
 }
 func StaticHandler(w http.ResponseWriter, r *http.Request) {
+	//TODO: add static handler
 	return
 }
