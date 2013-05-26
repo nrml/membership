@@ -3,10 +3,10 @@ package endpoints
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/nrml/membership-go/models"
 	"github.com/nrml/membership-go/service"
 	"github.com/nrml/server-go"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -26,7 +26,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		sID := r.URL.Path[1:]
-		fmt.Println("routing GET", sID)
+		log.Println("routing GET", sID)
 		var id int64 = 0
 
 		if sID == "" {

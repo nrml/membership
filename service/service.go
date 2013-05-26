@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"fmt"
 	"github.com/nrml/datalayer-go/sqlite"
 	"github.com/nrml/membership-go/models"
 	"log"
@@ -18,24 +17,24 @@ func (service *MembershipService) Init(namespace string) {
 	service.Namespace = namespace + ".membership"
 	db := sqlite.DB{}
 	service.db = &db
-	service.db.Namespace = namespace + ".membership"
+	service.db.Namespace = "data/" + namespace + ".membership"
 	err := service.db.Init()
 
 	if err != nil {
-		fmt.Println("fatal error initialzing database")
+		log.Println("fatal error initialzing database")
 		log.Fatal("fatal error initializing database")
 	}
-	fmt.Println("sanity check for registraiton")
+	log.Println("sanity check for registraiton")
 	sCheck(service.db)
 	tbl := db.Table("Registration", models.Registration{})
 	service.tbl = &tbl
 }
 
 func sCheck(localdb *sqlite.DB) {
-	fmt.Println("sanity check: create registration table")
+	log.Println("sanity check: create registration table")
 	_, err := localdb.CreateTable("Registration", models.Registration{})
 	if err != nil {
-		fmt.Println("create registration table: ", err.Error())
+		log.Println("create registration table: ", err.Error())
 		log.Fatal("fatal error when trying to create the registation table: " + err.Error())
 	}
 }
@@ -54,6 +53,7 @@ func (service *MembershipService) Get(id int64) (models.Registration, error) {
 		return models.Registration{}, errors.New("uknown registration id")
 	}
 	reg := res.(models.Registration)
+	reg.Password = ""
 	return reg, err
 }
 func (service *MembershipService) List() ([]models.Registration, error) {
