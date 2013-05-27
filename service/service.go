@@ -61,6 +61,7 @@ func (service *MembershipService) List() ([]models.Registration, error) {
 	reg := make([]models.Registration, len(res))
 	for i, arg := range res {
 		reg[i] = arg.(models.Registration)
+		reg[i].Password = ""
 	}
 	return reg, err
 }
@@ -69,6 +70,7 @@ func (service *MembershipService) Search(searchString string) ([]models.Registra
 	reg := make([]models.Registration, len(res))
 	for i, arg := range res {
 		reg[i] = arg.(models.Registration)
+		reg[i].Password = ""
 	}
 	return reg, err
 }
