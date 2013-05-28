@@ -33,9 +33,12 @@ func main() {
 		log.Printf("port error: %s\n", err.Error())
 	}
 
-	svc := new(service.MembershipService)
-
-	_, err = rpc.NewServer("Membership", svc, iport)
+	//for rdp, we don't know the key or namespace at this point
+	svc := service.NewMembershipService("", "")
+	svr, err := rpc.NewServer("Membership", svc, iport)
+	for {
+		svr.Accept()
+	}
 
 	if err != nil {
 		log.Fatal("server error:", err)

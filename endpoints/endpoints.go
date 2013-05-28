@@ -18,7 +18,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	if ref == "" {
 		ref = "localhost"
 	}
-	service := service.MembershipService{}
+	service := service.NewMembershipService()
 	service.Init(ref)
 
 	var reg models.Registration
@@ -123,7 +123,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if ref == "" {
 		ref = "localhost"
 	}
-	service := service.MembershipService{}
+	service := service.NewMembershipService()
 	service.Init(ref)
 
 	m := r.Method

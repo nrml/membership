@@ -2,44 +2,79 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"github.com/nrml/datalayer-go/sqlite"
 	"github.com/nrml/membership-go/models"
 	"log"
 )
 
-type MembershipService struct {
+type ServiceStatus struct {
+	Status    int8
 	Namespace string
+}
+
+type membershipService struct {
+	namespace string
+	key       string
 	db        *sqlite.DB
 	tbl       *sqlite.Table
 }
 
-func (service *MembershipService) Init(namespace string) {
-	service.Namespace = namespace + ".membership"
+func NewMembershipService(key string, namespace string) *membershipService {
+	svc := new(membershipService)
+	svc.namespace = namespace
+	svc.key = key
+	return svc
+}
+
+func (service *membershipService) Init(key string, namespace string) (ServiceStatus, error) {
+	status := ServiceStatus{}
+	status.Namespace = namespace
+
+	if namespace == "" || key == "" {
+		err := errors.New("key and namespace required")
+		status.Status = -1
+		return status, err
+	}
+	service.namespace = namespace
+	service.key = key
+
 	db := sqlite.DB{}
 	service.db = &db
-	service.db.Namespace = "data/" + namespace + ".membership"
+	service.db.Namespace = fmt.Sprintf("data/%s.%s.membership", key, namespace)
 	err := service.db.Init()
 
 	if err != nil {
-		log.Println("fatal error initialzing database")
-		log.Fatal("fatal error initializing database")
+		log.Println("fatal opening database")
+		status.Status = -11
+		return status, err
 	}
-	log.Println("sanity check for registraiton")
-	sCheck(service.db)
+	//log.Println("sanity check for registraiton")
+	err = sCheck(service.db)
+
+	if err != nil {
+		log.Println("fatal initializing database")
+		status.Status = -1
+		return status, err
+	}
+
 	tbl := db.Table("Registration", models.Registration{})
 	service.tbl = &tbl
+
+	status.Status = 1
+
+	return status, err
 }
 
-func sCheck(localdb *sqlite.DB) {
-	log.Println("sanity check: create registration table")
+func sCheck(localdb *sqlite.DB) error {
 	_, err := localdb.CreateTable("Registration", models.Registration{})
 	if err != nil {
 		log.Println("create registration table: ", err.Error())
-		log.Fatal("fatal error when trying to create the registation table: " + err.Error())
 	}
+	return err
 }
 
-func (service *MembershipService) Create(reg models.Registration) (models.Registration, error) {
+func (service *membershipService) Create(reg models.Registration) (models.Registration, error) {
 	reg.Password = encrypt(reg.Password)
 	id, err := service.tbl.Create(reg)
 	reg.ID = id
@@ -47,7 +82,7 @@ func (service *MembershipService) Create(reg models.Registration) (models.Regist
 	return reg, err
 }
 
-func (service *MembershipService) Get(id int64) (models.Registration, error) {
+func (service *membershipService) Get(id int64) (models.Registration, error) {
 	res, err := service.tbl.Get(id)
 	if res == nil {
 		return models.Registration{}, errors.New("uknown registration id")
@@ -56,7 +91,7 @@ func (service *MembershipService) Get(id int64) (models.Registration, error) {
 	reg.Password = ""
 	return reg, err
 }
-func (service *MembershipService) List() ([]models.Registration, error) {
+func (service *membershipService) List() ([]models.Registration, error) {
 	res, err := service.tbl.List()
 	reg := make([]models.Registration, len(res))
 	for i, arg := range res {
@@ -65,7 +100,7 @@ func (service *MembershipService) List() ([]models.Registration, error) {
 	}
 	return reg, err
 }
-func (service *MembershipService) Search(searchString string) ([]models.Registration, error) {
+func (service *membershipService) Search(searchString string) ([]models.Registration, error) {
 	res, err := service.tbl.Search(searchString)
 	reg := make([]models.Registration, len(res))
 	for i, arg := range res {
@@ -74,13 +109,13 @@ func (service *MembershipService) Search(searchString string) ([]models.Registra
 	}
 	return reg, err
 }
-func (service *MembershipService) Update(reg models.Registration) (models.Registration, error) {
+func (service *membershipService) Update(reg models.Registration) (models.Registration, error) {
 	reg.Password = encrypt(reg.Password)
 	err := service.tbl.Update(reg.ID, reg)
 	reg.Password = ""
 	return reg, err
 }
-func (service *MembershipService) Delete(id int64) error {
+func (service *membershipService) Delete(id int64) error {
 	err := service.tbl.Delete(id)
 	return err
 }
