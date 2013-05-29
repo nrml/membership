@@ -4,7 +4,7 @@ import (
 	//"fmt"
 	//"github.com/nrml/membership-go/endpoints"
 	"github.com/nrml/membership-go/service"
-	"github.com/nrml/rpc-go"
+	"github.com/nrml/rpc-go/msgpack"
 	"log"
 	//"net/http"
 	"os"

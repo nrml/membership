@@ -21,6 +21,7 @@ type membershipService struct {
 }
 
 func NewMembershipService(key string, namespace string) *membershipService {
+	log.Println("new membership service")
 	svc := new(membershipService)
 	svc.namespace = namespace
 	svc.key = key
@@ -28,6 +29,7 @@ func NewMembershipService(key string, namespace string) *membershipService {
 }
 
 func (service *membershipService) Init(key string, namespace string) (ServiceStatus, error) {
+	log.Println("membership service init: " + key + "." + namespace)
 	status := ServiceStatus{}
 	status.Namespace = namespace
 
