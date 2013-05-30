@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	f, _ := os.Create("membership.log")
+	f, _ := os.Create("log/membership.log")
 	log.SetOutput(f)
 	//http.HandleFunc("/favicon.ico", endpoints.StaticHandler)
 	//http.HandleFunc("/login", endpoints.LoginHandler)
