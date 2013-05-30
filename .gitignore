@@ -7,7 +7,7 @@ data
 membership
 membership-go
 localhost.membership
-
+log/
 # Thumbnails
 ._*
 
