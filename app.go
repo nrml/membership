@@ -12,6 +12,8 @@ import (
 )
 
 func main() {
+	f, _ := os.Open("logfile")
+	log.SetOutput(f)
 	//http.HandleFunc("/favicon.ico", endpoints.StaticHandler)
 	//http.HandleFunc("/login", endpoints.LoginHandler)
 	//http.HandleFunc("/", endpoints.Handler)
