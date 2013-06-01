@@ -43,7 +43,7 @@ func (service *membershipService) Init(key string, namespace string) (ServiceSta
 
 	db := sqlite.DB{}
 	service.db = &db
-	service.db.Namespace = fmt.Sprintf("data/%s.%s.membership", key, namespace)
+	service.db.Namespace = fmt.Sprintf("%s.%s.membership", key, namespace)
 	err := service.db.Init()
 
 	if err != nil {
