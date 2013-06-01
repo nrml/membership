@@ -20,7 +20,7 @@ func main() {
 
 	port := os.Args[1]
 
-	//fmt.Println("listening on port:", port)
+	log.Println("rpc listening on port:", port)
 
 	// err := http.ListenAndServe(":"+port, nil)
 	// if err != nil {
